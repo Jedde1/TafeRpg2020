@@ -33,14 +33,82 @@ namespace stats
         [Header("Character Level Info")]
         public int level = 0;
         public float currentExp, neededExp, maxExp;
-        #endregion
+
+        [Header("Death")]
+        public Image damageImage;
+        public Image deathImage;
+        public Text deathText;
+        public AudioClip deathClip;
+        public AudioSource playersAudio;
+
+        public float flashSpeed;
+        public Color flashColour = new Color(1,0,0,0.2f);
+        public static bool isDead;
+#if UNITY_EDITOR
+        //REMOVE LATER
+        public bool damaged;
+#endif
+#endregion
 
         private void Update()
         {
+#if UNITY_EDITOR
+            if (Input.GetKeyDown(KeyCode.Backspace))
+            {
+                damaged = true;
+                characterStatus[0].curValue -= 25;
+            }
+#endif
             for (int i = 0; i < characterStatus.Length; i++)
             {
                 characterStatus[i].displayImage.fillAmount = Mathf.Clamp01(characterStatus[i].curValue / characterStatus[i].maxValue);
             }            
+        }
+
+        private void LateUpdate()
+        {
+            if(characterStatus[0].curValue <= 0 && !isDead)
+            {
+                //Death Function
+                Death();
+
+            }
+        }
+        void Death()
+        {
+            //Set the death flag to dead and clear existing Text if text isnt blank
+            isDead = true;
+            deathText.text = "";
+            //Set the Audio to play our Death Clip
+            playersAudio.clip = deathClip;
+            playersAudio.Play();
+            //Trigger the animation
+            deathImage.GetComponent<Animator>().SetTrigger("isDead");
+            //2-Death Text
+            Invoke("DeathText", 2f);
+            //6-Revive Text
+            Invoke("ReviveText", 6f);
+            //9-Respawn Function
+            Invoke("Revive", 9f);
+        }
+        void DeathText()
+        {
+            deathText.text = "YOU DIED";
+        }
+        void ReviveText()
+        {
+            deathText.text = "HAHA GET GOOD";
+        }
+        void Revive()
+        {
+            //Reset Everything
+            deathText.text = "";
+            isDead = false;
+            characterStatus[0].curValue = characterStatus[0].maxValue;
+            //Load Positon
+
+            //Revive
+            deathImage.GetComponent<Animator>().SetTrigger("Respawn");
         }
     }
 }

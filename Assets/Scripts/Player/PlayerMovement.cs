@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour
     public float gravity = 20f;
     [Header("Movement Variables")]
     public float moveSpeed;
-    public float walkSpeed, jumpSpeed, sprintSpeed, superSprintSpeed, crouchSpeed;
+    public float walkSpeed, jumpSpeed, superJump, sprintSpeed, superSprintSpeed, crouchSpeed;
 
     private Vector3 _moveDir;
 
@@ -24,9 +24,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    void FixedUpdate()
     {
         Move();
+        
     }
   
     void Move()
@@ -39,9 +40,14 @@ public class PlayerMovement : MonoBehaviour
             {
                 _moveDir.y = jumpSpeed;
             }
+            else if (Input.GetKey(KeyCode.L))
+            {
+                _moveDir.y = superJump;
+            }
             else if (Input.GetButton("Sprint"))
             {
                 moveSpeed = sprintSpeed;
+                Debug.Log("Move");
             }
             else if (Input.GetKey(KeyCode.P))
             {
@@ -54,6 +60,7 @@ public class PlayerMovement : MonoBehaviour
         }
         _moveDir.y -= gravity * Time.deltaTime;
         controller.Move(_moveDir * Time.deltaTime);
+        
     }
 }
 
