@@ -34,16 +34,19 @@ public class Mouselook : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(axis == RotationAxis.MouseH)
+        if (!stats.BaseStats.isDead)
         {
-            transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime, 0);
-        }
-        else //MouseV
-        {
-            _rotY += Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
-            _rotY = Mathf.Clamp(_rotY, minY, maxY);
-            transform.localEulerAngles = new Vector3(-_rotY, 0, 0);
-        }
+            if (axis == RotationAxis.MouseH)
+            {
+                transform.Rotate(0, Input.GetAxis("Mouse X") * sensitivity * Time.deltaTime, 0);
+            }
+            else //MouseV
+            {
+                _rotY += Input.GetAxis("Mouse Y") * sensitivity * Time.deltaTime;
+                _rotY = Mathf.Clamp(_rotY, minY, maxY);
+                transform.localEulerAngles = new Vector3(-_rotY, 0, 0);
+            }
+        }       
     }
    
 }

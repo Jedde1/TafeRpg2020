@@ -28,7 +28,7 @@ namespace stats
         #region Variables
         [Header("Character Data")]
         public new string name;
-        public LifeForceStatus[] characterStatus = new LifeForceStatus[3];
+        public LifeForceStatus[] characterResources = new LifeForceStatus[3];
         public StatBlock[] characterStats = new StatBlock[6];
         [Header("Character Level Info")]
         public int level = 0;
@@ -42,38 +42,62 @@ namespace stats
         public AudioSource playersAudio;
 
         public float flashSpeed;
-        public Color flashColour = new Color(1,0,0,0.2f);
+        public Color flashColour = new Color(1, 0, 0, 0.2f);
         public static bool isDead;
-#if UNITY_EDITOR
-        //REMOVE LATER
         public bool damaged;
-#endif
-#endregion
+        public bool canHeal;
+        public float healTimer;
+        #endregion
 
         private void Update()
         {
 #if UNITY_EDITOR
             if (Input.GetKeyDown(KeyCode.Backspace))
             {
-                damaged = true;
-                characterStatus[0].curValue -= 25;
+                DamagePlayer(25);
             }
 #endif
-            for (int i = 0; i < characterStatus.Length; i++)
+            #region Health, Stam, Man
+            for (int i = 0; i < characterResources.Length; i++)
             {
-                characterStatus[i].displayImage.fillAmount = Mathf.Clamp01(characterStatus[i].curValue / characterStatus[i].maxValue);
-            }            
+                characterResources[i].displayImage.fillAmount = Mathf.Clamp01(characterResources[i].curValue / characterResources[i].maxValue);
+            }
+            #endregion
+            #region Damage Flash
+            if (damaged && !isDead)
+            {
+                damageImage.color = flashColour;
+                damaged = false;
+            }
+            else if (damageImage.color.a > 0)
+            {
+                damageImage.color = Color.Lerp(damageImage.color, Color.clear, flashSpeed * Time.deltaTime);
+            }
+            #endregion
+            if (!canHeal)
+            {
+                healTimer += Time.deltaTime;
+                if (healTimer >= 5)
+                {
+                    canHeal = true;
+                }
+            }
         }
 
         private void LateUpdate()
         {
-            if(characterStatus[0].curValue <= 0 && !isDead)
+            if (characterResources[0].curValue <= 0 && !isDead)
             {
                 //Death Function
                 Death();
-
+            }
+            //Healing
+            if (canHeal && characterResources[0].curValue < characterResources[0].maxValue && characterResources[0].curValue > 0)
+            {
+                HealOverTime();
             }
         }
+        #region Death & Respawn
         void Death()
         {
             //Set the death flag to dead and clear existing Text if text isnt blank
@@ -104,11 +128,27 @@ namespace stats
             //Reset Everything
             deathText.text = "";
             isDead = false;
-            characterStatus[0].curValue = characterStatus[0].maxValue;
+            characterResources[0].curValue = characterResources[0].maxValue;
             //Load Positon
 
             //Revive
             deathImage.GetComponent<Animator>().SetTrigger("Respawn");
+        }
+        #endregion
+
+        public void DamagePlayer(float damage)
+        {
+            //Aplies damage to player from world
+            damaged = true;
+            characterResources[0].curValue -= damage;
+            //Unable to heal
+            canHeal = false;
+            //Reset heal Timer
+            healTimer = 0;
+        }
+        public void HealOverTime()
+        {
+            characterResources[0].curValue += Time.deltaTime * (characterResources[0].regenValue/*Maybe * by Con*/);
         }
     }
 }
