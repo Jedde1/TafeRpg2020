@@ -8,12 +8,19 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
+    public stats.BaseStats playerStats;
     [Header("Phisics")]
     public CharacterController controller;
     public float gravity = 20f;
     [Header("Movement Variables")]
     public float moveSpeed;
     public float walkSpeed, jumpSpeed, superJump, sprintSpeed, superSprintSpeed, crouchSpeed;
+    public bool isSprinting;
+    public bool stamRegen;
+    public float stamDelay;
+
+    bool LastUsedSprint = false;
+    bool toggleSprint = false;
 
     private Vector3 _moveDir;
 
@@ -23,57 +30,130 @@ public class PlayerMovement : MonoBehaviour
         controller = gameObject.GetComponent<CharacterController>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
+        if (!stamRegen)
+        {
+            stamDelay += Time.deltaTime;
+            if (stamDelay >= 5)
+            {
+                stamRegen = true;
+            }
+        }
         Move();
-        
     }
-  
+    void FixedUpdate()
+    {
+
+        if (isSprinting == true)
+        {
+            StaminaDrain(10);
+        }
+
+    }
+    private void LateUpdate()
+    {
+        if (!isSprinting && playerStats.characterResources[1].curValue < playerStats.characterResources[1].maxValue && stamRegen)
+        {
+            StaminaRegen();
+        }
+    }
+
     void Move()
     {
-        if (controller.isGrounded&&!stats.BaseStats.isDead)
+        if (controller.isGrounded && !stats.BaseStats.isDead)
         {
-            _moveDir = transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * moveSpeed);
+
             moveSpeed = walkSpeed;
+
+            isSprinting = false;
+
+
+            //if (Input.GetButtonDown("Sprint"))
+            //{
+            //    toggleSprint = !toggleSprint;
+            //}
+            //if(toggleSprint)
+            //{
+            //    Sprint();
+            //}
+
+
+            bool sprint = Input.GetButton("Sprint");
+            bool crouch = Input.GetButton("Crouch");
+
+            if (sprint && !crouch && playerStats.characterResources[1].curValue > 0)
+            {
+                Sprint();
+                LastUsedSprint = true;
+            }
+            else if (!sprint && crouch)
+            {
+                Crouch();
+
+                LastUsedSprint = false;
+            }
+            else if (sprint && crouch)
+            {
+                if (LastUsedSprint)
+                {
+                    Crouch();
+                }
+                else
+                {
+                    Sprint();
+                }
+            }
+
+
+#if UNITY_EDITOR
+            if (Input.GetKey(KeyCode.P))
+            {
+                moveSpeed = superSprintSpeed;
+            }
+
+#endif
+            _moveDir = transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * moveSpeed);// * Time.deltaTime);
+
             if (Input.GetButton("Jump"))
             {
                 _moveDir.y = jumpSpeed;
             }
-            else if (Input.GetKey(KeyCode.L))
+#if UNITY_EDITOR
+            if (Input.GetKey(KeyCode.L))
             {
                 _moveDir.y = superJump;
             }
-            else if (Input.GetButton("Sprint"))
-            {
-                moveSpeed = sprintSpeed;
-                Debug.Log("Move");
-            }
-            else if (Input.GetKey(KeyCode.P))
-            {
-                moveSpeed = superSprintSpeed;
-            }
-            else if (Input.GetButton("Crouch"))
-            {
-                moveSpeed = crouchSpeed;                
-            }
+#endif
         }
         _moveDir.y -= gravity * Time.deltaTime;
         controller.Move(_moveDir * Time.deltaTime);
-        
+    }
+
+    public void StaminaDrain(float stam)
+    {
+        playerStats.characterResources[1].curValue -= stam * Time.deltaTime;
+        stamRegen = false;
+        stamDelay = 0;
+    }
+    public void StaminaRegen()
+    {
+        playerStats.characterResources[1].curValue += Time.deltaTime * (playerStats.characterResources[1].regenValue);
+
+    }
+
+    void Crouch()
+    {
+        moveSpeed = crouchSpeed;
+
+    }
+
+    void Sprint()
+    {
+        moveSpeed = sprintSpeed;
+        if (moveSpeed == sprintSpeed)
+        {
+            isSprinting = true;
+        }
     }
 }
-
-
-
-
-
-/*
-  private void Move()
-  {
-      moveDir = transform.TransformDirection(new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical")) * walkSpeed);
-
-      moveDir = gravity * Time.deltaTime;
-      controller.Move(moveDir * Time.deltaTime);
-  }
-  */

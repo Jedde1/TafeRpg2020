@@ -558,7 +558,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  m_Sprite: {fileID: 21300000, guid: 02356b3b1d71ca746a9bfcce37499630, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -1005,7 +1005,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 8183090824395472912, guid: 44f9d6795a9805b489911c9dc5d4e101,
+  m_Sprite: {fileID: 4018903246293276348, guid: 635dab37929aed3468f8351d7c018fec,
     type: 3}
   m_Type: 3
   m_PreserveAspect: 0
@@ -1241,6 +1241,36 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 619380338}
   m_CullTransparentMesh: 0
+--- !u!1 &654999331
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 654999332}
+  m_Layer: 0
+  m_Name: CheckPoint
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &654999332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 654999331}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 131.76, y: 10.48, z: 164.48}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 1680304232}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &672325170
 GameObject:
   m_ObjectHideFlags: 0
@@ -2879,6 +2909,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1659258283}
   - component: {fileID: 1659258284}
+  - component: {fileID: 1659258285}
   m_Layer: 0
   m_Name: PauseMenu
   m_TagString: Untagged
@@ -2914,6 +2945,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   pausePanel: {fileID: 934744214}
   optionsPanel: {fileID: 875182344}
+--- !u!114 &1659258285
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1659258282}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a96863dd05d98d743811d655c6e95874, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  playerStats: {fileID: 2091297229}
 --- !u!1 &1678717763
 GameObject:
   m_ObjectHideFlags: 0
@@ -3035,6 +3079,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 254550717}
+  - {fileID: 654999332}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -3088,12 +3133,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 1, g: 1, b: 1, a: 0}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 0}
+  m_Sprite: {fileID: 21300000, guid: 9e0109c953e370645bcecfda20aa0c08, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3666,6 +3711,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffdbb7e707dd57f41b24a43ae4c005ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  playerStats: {fileID: 2091297229}
   controller: {fileID: 0}
   gravity: 20
   moveSpeed: 5
@@ -3675,6 +3721,9 @@ MonoBehaviour:
   sprintSpeed: 20
   superSprintSpeed: 100
   crouchSpeed: 5
+  isSprinting: 0
+  stamRegen: 0
+  stamDelay: 5
 --- !u!143 &2091297227
 CharacterController:
   m_ObjectHideFlags: 0
@@ -3724,18 +3773,18 @@ MonoBehaviour:
   name: 
   characterResources:
   - name: Health
-    curValue: 100
     maxValue: 100
+    curValue: 100
     regenValue: 10
     displayImage: {fileID: 1323238292}
   - name: Stamina
-    curValue: 100
     maxValue: 100
+    curValue: 100
     regenValue: 10
     displayImage: {fileID: 449336809}
   - name: Mana
-    curValue: 100
     maxValue: 100
+    curValue: 100
     regenValue: 10
     displayImage: {fileID: 1913174074}
   characterStats:
@@ -3744,7 +3793,7 @@ MonoBehaviour:
   - name: Dextarity
     value: 0
   - name: Constitution
-    value: 0
+    value: 2
   - name: Intelligence
     value: 0
   - name: Wisdom
@@ -3755,6 +3804,7 @@ MonoBehaviour:
   currentExp: 0
   neededExp: 0
   maxExp: 0
+  checkPoint: {fileID: 654999332}
   damageImage: {fileID: 1678717765}
   deathImage: {fileID: 27235932}
   deathText: {fileID: 619380340}

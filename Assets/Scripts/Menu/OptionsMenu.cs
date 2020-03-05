@@ -1,18 +1,17 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class OptionsMenu : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    #region Audio Mixer
+    //Audio Mixer is a Master Audio Controller
+    public AudioMixer audioMixer;
+    public void SetVolume(float volume)
     {
-        
+        audioMixer.SetFloat("Volume", volume);
     }
+    #endregion
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
