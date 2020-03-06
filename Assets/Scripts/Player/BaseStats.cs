@@ -33,7 +33,7 @@ namespace stats
         [Header("Character Level Info")]
         public int level = 0;
         public float currentExp, neededExp, maxExp;
-        public Transform checkPoint;
+        
 
         [Header("Death")]
         public Image damageImage;
@@ -41,6 +41,8 @@ namespace stats
         public Text deathText;
         public AudioClip deathClip;
         public AudioSource playersAudio;
+        public Transform checkPoint;
+        public PlayerSaveAndLoad saveAndLoad;
 
         public float flashSpeed;
         public Color flashColour = new Color(1, 0, 0, 0.2f);
@@ -131,7 +133,8 @@ namespace stats
             isDead = false;
             characterResources[0].curValue = characterResources[0].maxValue;
             //Load Positon
-
+            this.transform.position = checkPoint.position;
+            this.transform.rotation = checkPoint.rotation;
             //Revive
             deathImage.GetComponent<Animator>().SetTrigger("Respawn");
         }
@@ -151,6 +154,32 @@ namespace stats
         {
             characterResources[0].curValue += Time.deltaTime * (characterResources[0].regenValue/*Maybe * by Con*/);
         }
+
+        #region CheckPoints
+        private void OnTriggerEnter(Collider other)
+        {
+            if (other.gameObject.CompareTag("CheckPoint"))
+            {
+                checkPoint = other.transform;
+                //Increase Healing
+                characterResources[0].regenValue += 4;
+                characterResources[1].regenValue += 4;
+                characterResources[2].regenValue += 4;
+                //Save
+                saveAndLoad.Save();
+            }            
+        }
+        private void OnTriggerExit(Collider other)
+        {
+            if (other.gameObject.tag == "CheckPoint")
+            {
+                //Go back to Normal Healing Rate
+                characterResources[0].regenValue -= 4;
+                characterResources[1].regenValue -= 4;
+                characterResources[2].regenValue -= 4;
+            }           
+        }
+        #endregion
     }
 }
 

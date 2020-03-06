@@ -34,7 +34,7 @@ public class PlayerSaveAndLoad : MonoBehaviour
             playerStats.characterResources[i].curValue = 100;
             playerStats.transform.position = new Vector3(160,1,160);
             playerStats.transform.rotation = new Quaternion(0,0,0,0);
-            Debug.Log("REMEBER CHECKPOINT");
+            playerStats.checkPoint = GameObject.Find("FirstCheckPoint").GetComponent<Transform>();
         }
     }
     public void Save()

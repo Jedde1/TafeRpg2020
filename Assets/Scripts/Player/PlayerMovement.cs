@@ -15,10 +15,10 @@ public class PlayerMovement : MonoBehaviour
     [Header("Movement Variables")]
     public float moveSpeed;
     public float walkSpeed, jumpSpeed, superJump, sprintSpeed, superSprintSpeed, crouchSpeed;
+    [Header("Sprinting and Crouching")]
     public bool isSprinting;
     public bool stamRegen;
     public float stamDelay;
-
     bool LastUsedSprint = false;
     bool toggleSprint = false;
 
