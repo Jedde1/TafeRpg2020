@@ -5,7 +5,7 @@ using UnityEngine.UI;
 
 public class KeyBindManager : MonoBehaviour
 {
-    private Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
+    public static Dictionary<string, KeyCode> keys = new Dictionary<string, KeyCode>();
     public Text forward, left, right, backward, jump, sprint, crouch;
     public GameObject curKey;
     public Color32 changed = new Color32(39, 171, 249, 255);

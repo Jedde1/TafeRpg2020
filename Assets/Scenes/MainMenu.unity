@@ -283,7 +283,7 @@ GameObject:
   - component: {fileID: 110686967}
   - component: {fileID: 110686966}
   m_Layer: 5
-  m_Name: Jump.btn
+  m_Name: Jump
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2216,7 +2216,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &408512635
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2751,7 +2751,7 @@ GameObject:
   - component: {fileID: 683209965}
   - component: {fileID: 683209964}
   m_Layer: 5
-  m_Name: Backward.btn
+  m_Name: Backward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4394,7 +4394,7 @@ GameObject:
   - component: {fileID: 1184971850}
   - component: {fileID: 1184971849}
   m_Layer: 5
-  m_Name: Left.btn
+  m_Name: Left
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -5286,7 +5286,7 @@ GameObject:
   - component: {fileID: 1343261101}
   - component: {fileID: 1343261100}
   m_Layer: 5
-  m_Name: Forward.btn
+  m_Name: Forward
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6423,7 +6423,7 @@ GameObject:
   - component: {fileID: 1556298838}
   - component: {fileID: 1556298837}
   m_Layer: 5
-  m_Name: Sprint.btn
+  m_Name: Sprint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7778,7 +7778,7 @@ GameObject:
   - component: {fileID: 2031528981}
   - component: {fileID: 2031528980}
   m_Layer: 5
-  m_Name: Right.btn
+  m_Name: Right
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -8207,7 +8207,7 @@ GameObject:
   - component: {fileID: 2120699114}
   - component: {fileID: 2120699113}
   m_Layer: 5
-  m_Name: Crouch.btn
+  m_Name: Crouch
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

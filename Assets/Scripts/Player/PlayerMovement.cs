@@ -9,7 +9,7 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public stats.BaseStats playerStats;
-    [Header("Phisics")]
+    [Header("Physics")]
     public CharacterController controller;
     public float gravity = 20f;
     [Header("Movement Variables")]
