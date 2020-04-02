@@ -48,41 +48,66 @@ public class NewMovement : MonoBehaviour
     }
     void Move()
     {
+        float horizontal = 0;
+        float vertical = 0;
+        if (Input.GetKey(KeyBindManager.keys["Forward"]))
+        {
+            vertical++;
+        }
+        if (Input.GetKey(KeyBindManager.keys["Left"]))
+        {
+            horizontal--;
+        }
+        if (Input.GetKey(KeyBindManager.keys["Right"]))
+        {
+            horizontal++;
+        }
+        if (Input.GetKey(KeyBindManager.keys["Backward"]))
+        {
+            vertical--;
+        }
         if (controller.isGrounded && !stats.BaseStats.isDead)
         {
-            moveSpeed = walkSpeed;
-            if (Input.GetKey(Forward))
-            {
-                _moveDir.z = 1;
-            }
-            if (Input.GetKey(Backward))
-            {
-                _moveDir.z = -1;
-            }
-            if (Input.GetKey(Left))
-            {
-                _moveDir.x = -1;
-            }
-            if (Input.GetKey(Right))
-            {
-                _moveDir.x = 1;
-            }
-            if (Input.GetKey(Jump))
-            {
-                _moveDir.y = 1;
-                moveSpeed = jumpSpeed;
-            }
-            if (Input.GetKey(Sprint))
-            {
+            _moveDir = transform.TransformDirection(new Vector3(horizontal, 0, vertical));
+            _moveDir *= moveSpeed;
 
-                moveSpeed = sprintSpeed;
-            }
-            if (Input.GetKey(Crouch))
+            if (Input.GetKey(KeyBindManager.keys["Jump"]))
             {
-
-                moveSpeed = crouchSpeed;
+                _moveDir.y = jumpSpeed;
             }
-            
+            //moveSpeed = walkSpeed;
+            //    if (Input.GetKey(Forward))
+            //    {
+            //        _moveDir.z = 1;
+            //    }
+            //    if (Input.GetKey(Backward))
+            //    {
+            //        _moveDir.z = -1;
+            //    }
+            //    if (Input.GetKey(Left))
+            //    {
+            //        _moveDir.x = -1;
+            //    }
+            //    if (Input.GetKey(Right))
+            //    {
+            //        _moveDir.x = 1;
+            //    }
+            //    if (Input.GetKey(Jump))
+            //    {
+            //        _moveDir.y = 1;
+            //        moveSpeed = jumpSpeed;
+            //    }
+            //    if (Input.GetKey(Sprint))
+            //    {
+
+            //        moveSpeed = sprintSpeed;
+            //    }
+            //    if (Input.GetKey(Crouch))
+            //    {
+
+            //        moveSpeed = crouchSpeed;
+            //    }
+
         }
         _moveDir.y -= gravity * Time.deltaTime;
         controller.Move(_moveDir * Time.deltaTime);
